@@ -144,6 +144,9 @@ jobs:
             "-DWAMR_BUILD_SIMD=1",
             "-DWAMR_BUILD_TAIL_CALL=1",
             "-DWAMR_DISABLE_HW_BOUND_CHECK=1",
+            "-DCMAKE_BUILD_TYPE=ASAN",
+            "-DCMAKE_BUILD_TYPE=LSAN",
+            "-DCMAKE_BUILD_TYPE=UBSAN"
           ]
         exclude:
           # uncompatiable feature and platform
@@ -189,7 +192,7 @@ jobs:
       - name: Build iwasm
         run: |
           mkdir build && cd build
-          cmake .. ${{ matrix.make_options_run_mode }} ${{ matrix.make_options_feature }} -DCMAKE_BUILD_TYPE=ASAN -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8
+          cmake .. ${{ matrix.make_options_run_mode }} ${{ matrix.make_options_feature }} -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8
           cmake --build . --config Release --parallel 4
         working-directory: product-mini/platforms/linux
 
