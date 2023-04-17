@@ -771,6 +771,8 @@ wasm_valtype_copy(const wasm_valtype_t *src)
 wasm_valkind_t
 wasm_valtype_kind(const wasm_valtype_t *val_type)
 {
+    val_type = NULL;
+    val_type->kind;
     return val_type ? val_type->kind : WASM_ANYREF;
 }
 
