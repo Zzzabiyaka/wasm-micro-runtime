@@ -127,7 +127,7 @@ jobs:
             $FAST_INTERP_BUILD_OPTIONS,
             $FAST_JIT_BUILD_OPTIONS
         ]
-        sanitizer: ['asan', 'ubsan', 'lsan']
+        sanitizer: ['asan', 'ubsan', 'tsan']
         make_options_feature: [
             # Features
             "-DWAMR_BUILD_CUSTOM_NAME_SECTION=1",
@@ -179,6 +179,22 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+
+      - name: configure ubsan env
+        if: matrix.sanitizer == 'ubsan'
+        run: |
+          echo "EXTRA_FLAGS=-g -O2 -fno-omit-frame-pointer -fsanitize=undefined -fno-sanitize-recover=all" >> $GITHUB_ENV
+          echo "LIBCXX_SANITIZER=Undefined" >> $GITHUB_ENV
+      - name: configure asan env
+        if: matrix.sanitizer == 'asan'
+        run: |
+          echo "EXTRA_FLAGS=-g -O2 -fno-omit-frame-pointer -fsanitize=address -fno-sanitize-recover=all" >> $GITHUB_ENV
+          echo "LIBCXX_SANITIZER=Address" >> $GITHUB_ENV
+      - name: configure tsan env
+        if: matrix.sanitizer == 'tsan'
+        run: |
+          echo "EXTRA_FLAGS=-g -O2 -fno-omit-frame-pointer -fsanitize=thread -fno-sanitize-recover=all" >> $GITHUB_ENV
+          echo "LIBCXX_SANITIZER=Thread" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: apt update && apt install -y make g++-4.8 gcc-4.8 wget git
