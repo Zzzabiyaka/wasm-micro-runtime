@@ -389,6 +389,7 @@ jobs:
             $MULTI_TIER_JIT_BUILD_OPTIONS,
           ]
         os: [ubuntu-20.04, ubuntu-22.04]
+        sanitizer: ['','asan','tsan','ubsan']
         wasi_sdk_release:
           [
             "https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-20/wasi-sdk-20.0-linux.tar.gz",
