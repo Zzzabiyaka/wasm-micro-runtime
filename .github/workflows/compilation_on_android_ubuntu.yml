@@ -219,7 +219,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        sanitizer: ['asan', 'ubsan', 'tsan']
         make_options_run_mode: [
             # Running mode
             $AOT_BUILD_OPTIONS,
@@ -232,6 +231,9 @@ jobs:
           ]
         make_options_feature: [
             # Features
+            "asan",
+            "ubsan",
+            "tsan",
             "-DWAMR_BUILD_CUSTOM_NAME_SECTION=1",
             "-DWAMR_BUILD_DEBUG_AOT=1",
             "-DWAMR_BUILD_DEBUG_INTERP=1",
@@ -339,17 +341,17 @@ jobs:
           key: ${{ matrix.llvm_cache_key }}
 
       - name: configure ubsan env
-        if: matrix.sanitizer == 'ubsan'
+        if: matrix.make_options_feature == 'ubsan'
         run: |
           echo "EXTRA_FLAGS=-g -O2 -fno-omit-frame-pointer -fsanitize=undefined -fno-sanitize-recover=all" >> $GITHUB_ENV
           echo "LIBCXX_SANITIZER=Undefined" >> $GITHUB_ENV
       - name: configure asan env
-        if: matrix.sanitizer == 'asan'
+        if: matrix.make_options_feature == 'asan'
         run: |
           echo "EXTRA_FLAGS=-g -O2 -fno-omit-frame-pointer -fsanitize=address -fno-sanitize-recover=all" >> $GITHUB_ENV
           echo "LIBCXX_SANITIZER=Address" >> $GITHUB_ENV
       - name: configure tsan env
-        if: matrix.sanitizer == 'tsan'
+        if: matrix.make_options_feature == 'tsan'
         run: |
           echo "EXTRA_FLAGS=-g -O2 -fno-omit-frame-pointer -fsanitize=thread -fno-sanitize-recover=all" >> $GITHUB_ENV
           echo "LIBCXX_SANITIZER=Thread" >> $GITHUB_ENV
