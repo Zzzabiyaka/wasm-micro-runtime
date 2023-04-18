@@ -669,7 +669,7 @@ jobs:
         run: ./test_wamr.sh ${{ matrix.test_option }} -t ${{ matrix.running_mode }}
         working-directory: ./tests/wamr-test-suites
 
-      #only install x32 support libraries when to run x86_32 cases
+      #only install x32 support libraries when to run x86_32 cases 
       - name: install x32 support libraries
         if: env.TEST_ON_X86_32 == 'true'
         run:
