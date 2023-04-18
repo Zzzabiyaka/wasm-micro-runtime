@@ -127,6 +127,7 @@ jobs:
             $FAST_INTERP_BUILD_OPTIONS,
             $FAST_JIT_BUILD_OPTIONS
         ]
+        sanitizer: ['asan', 'ubsan', 'lsan']
         make_options_feature: [
             # Features
             "-DWAMR_BUILD_CUSTOM_NAME_SECTION=1",
