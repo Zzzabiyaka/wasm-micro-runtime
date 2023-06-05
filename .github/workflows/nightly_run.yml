@@ -509,8 +509,6 @@ jobs:
             ubuntu_version: "22.04"
         exclude:
           # uncompatiable modes and features
-          - os: ubuntu-20.04
-            sanitizer: asan
           # asan works only for aot now
           - running_mode: "classic-interp"
             sanitizer: asan
