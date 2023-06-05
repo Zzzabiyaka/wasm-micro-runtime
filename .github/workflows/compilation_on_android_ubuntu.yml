@@ -213,9 +213,6 @@ jobs:
             platform: android
           - make_options_run_mode: $MULTI_TIER_JIT_BUILD_OPTIONS
             platform: android
-          # only test andorid on ubuntu latest
-          - os: ubuntu-20.04
-            platform: android
         include:
           - os: ubuntu-20.04
             llvm_cache_key: ${{ needs.build_llvm_libraries_on_ubuntu_2004.outputs.cache_key }}
