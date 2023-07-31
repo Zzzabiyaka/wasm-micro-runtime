@@ -10,7 +10,7 @@ CC=${CC:=/opt/wasi-sdk/bin/clang}
 WAMR_DIR=../../../../..
 
 # Stress tests names
-thread_start_file_exclusions=("spawn_stress_test.wasm" "linear_memory_size_update.wasm")
+thread_start_file_exclusions=("spawn_stress_test.wasm" "linear_memory_size_update.wasm" "stress_test_threads_creation.wasm")
 
 for test_c in *.c; do
     test_wasm="$(basename $test_c .c).wasm"
