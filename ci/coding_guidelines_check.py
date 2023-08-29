@@ -163,6 +163,9 @@ def run_aspell(file_path: pathlib, root: pathlib) -> bool:
 
 
 def check_dir_name(path: pathlib, root: pathlib) -> bool:
+    if not path.relative_to(root).parent.is_dir():
+        return True
+
     m = re.search(INVALID_DIR_NAME_SEGMENT, str(path.relative_to(root).parent))
     if m:
         print(f"--- found a character '_' in {m.groups()} in {path}")
@@ -171,6 +174,9 @@ def check_dir_name(path: pathlib, root: pathlib) -> bool:
 
 
 def check_file_name(path: pathlib) -> bool:
+    if not path.is_file():
+        return True
+
     m = re.search(INVALID_FILE_NAME_SEGMENT, path.stem)
     if m:
         print(f"--- found a character '-' in {m.groups()} in {path}")
