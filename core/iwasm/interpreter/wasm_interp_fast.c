@@ -47,7 +47,7 @@ typedef float64 CellType_F64;
      && (app_addr) <= shared_heap_end_off - bytes + 1)
 
 #define shared_heap_addr_app_to_native(app_addr, native_addr) \
-    native_addr = shared_heap_base_addr + ((app_addr)-shared_heap_start_off)
+    native_addr = shared_heap_base_addr + ((app_addr) - shared_heap_start_off)
 
 #define CHECK_SHARED_HEAP_OVERFLOW(app_addr, bytes, native_addr) \
     if (app_addr_in_shared_heap(app_addr, bytes))                \
@@ -1699,6 +1699,11 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                                         GET_OPERAND(uint64, I64, off));
                         ret_offset += 2;
                     }
+                    else if (ret_types[ret_idx] == VALUE_TYPE_V128) {
+                        PUT_V128_TO_ADDR(prev_frame->lp + ret_offset,
+                                         GET_OPERAND_V128(off));
+                        ret_offset += 4;
+                    }
 #if WASM_ENABLE_GC != 0
                     else if (wasm_is_type_reftype(ret_types[ret_idx])) {
                         PUT_REF_TO_ADDR(prev_frame->lp + ret_offset,
@@ -1788,7 +1793,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                 else
                     cur_func_type = cur_func->u.func->func_type;
 
-                    /* clang-format off */
+                /* clang-format off */
 #if WASM_ENABLE_GC == 0
                 if (cur_type != cur_func_type) {
                     wasm_set_exception(module, "indirect call type mismatch");
@@ -3536,6 +3541,24 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                 HANDLE_OP_END();
             }
 
+#if WASM_ENABLE_SIMDE != 0
+            HANDLE_OP(EXT_OP_SET_LOCAL_FAST_V128)
+            HANDLE_OP(EXT_OP_TEE_LOCAL_FAST_V128)
+            {
+                /* clang-format off */
+#if WASM_CPU_SUPPORTS_UNALIGNED_ADDR_ACCESS != 0
+                local_offset = *frame_ip++;
+#else
+                local_offset = *frame_ip;
+                frame_ip += 2;
+#endif
+                /* clang-format on */
+                PUT_V128_TO_ADDR((uint32 *)(frame_lp + local_offset),
+                                 GET_OPERAND_V128(0));
+                frame_ip += 2;
+                HANDLE_OP_END();
+            }
+#endif
             HANDLE_OP(WASM_OP_GET_GLOBAL)
             {
                 global_idx = read_uint32(frame_ip);
@@ -3572,7 +3595,19 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                                 GET_I64_FROM_ADDR((uint32 *)global_addr));
                 HANDLE_OP_END();
             }
-
+#if WASM_ENABLE_SIMDE != 0
+            HANDLE_OP(WASM_OP_GET_GLOBAL_128)
+            {
+                global_idx = read_uint32(frame_ip);
+                bh_assert(global_idx < module->e->global_count);
+                global = globals + global_idx;
+                global_addr = get_global_addr(global_data, global);
+                addr_ret = GET_OFFSET();
+                PUT_V128_TO_ADDR(frame_lp + addr_ret,
+                                GET_V128_FROM_ADDR((uint32 *)global_addr));
+                HANDLE_OP_END();
+            }
+#endif
             HANDLE_OP(WASM_OP_SET_GLOBAL)
             {
                 global_idx = read_uint32(frame_ip);
@@ -3639,6 +3674,19 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                                 GET_I64_FROM_ADDR(frame_lp + addr1));
                 HANDLE_OP_END();
             }
+#if WASM_ENABLE_SIMDE != 0
+            HANDLE_OP(WASM_OP_SET_GLOBAL_128)
+            {
+                global_idx = read_uint32(frame_ip);
+                bh_assert(global_idx < module->e->global_count);
+                global = globals + global_idx;
+                global_addr = get_global_addr(global_data, global);
+                addr1 = GET_OFFSET();
+                PUT_V128_TO_ADDR((uint32 *)global_addr,
+                                GET_V128_FROM_ADDR(frame_lp + addr1));
+                HANDLE_OP_END();
+            }
+#endif
 
             /* memory load instructions */
             HANDLE_OP(WASM_OP_I32_LOAD)
@@ -4884,6 +4932,28 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
 
                 HANDLE_OP_END();
             }
+#if WASM_ENABLE_SIMDE != 0
+            HANDLE_OP(EXT_OP_COPY_STACK_TOP_V128)
+            {
+                addr1 = GET_OFFSET();
+                addr2 = GET_OFFSET();
+
+                PUT_V128_TO_ADDR(frame_lp + addr2,
+                                 GET_V128_FROM_ADDR(frame_lp + addr1));
+
+#if WASM_ENABLE_GC != 0
+                /* Ignore constants because they are not reference */
+                if (addr1 >= 0) {
+                    if (*FRAME_REF(addr1)) {
+                        CLEAR_FRAME_REF(addr1);
+                        SET_FRAME_REF(addr2);
+                    }
+                }
+#endif
+
+                HANDLE_OP_END();
+            }
+#endif
 
             HANDLE_OP(EXT_OP_COPY_STACK_VALUES)
             {
@@ -5879,13 +5949,12 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     {
                         uint32 offset, addr;
                         offset = read_uint32(frame_ip);
-                        frame_ip += 2;
+                        V128 data = POP_V128();
+                        int32 base = POP_I32();
+                        offset += base;
                         addr = GET_OPERAND(uint32, I32, 0);
 
-                        V128 data;
-                        data = POP_V128();
-
-                        CHECK_MEMORY_OVERFLOW(16);
+                        CHECK_MEMORY_OVERFLOW(32);
                         STORE_V128(maddr, data);
                         break;
                     }
@@ -5905,13 +5974,13 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     case SIMD_v8x16_shuffle:
                     {
                         V128 indices;
-                        V128 v2 = POP_V128();
-                        V128 v1 = POP_V128();
-                        addr_ret = GET_OFFSET();
-
                         bh_memcpy_s(&indices, sizeof(V128), frame_ip,
                                     sizeof(V128));
                         frame_ip += sizeof(V128);
+
+                        V128 v2 = POP_V128();
+                        V128 v1 = POP_V128();
+                        addr_ret = GET_OFFSET();
 
                         V128 result;
                         for (int i = 0; i < 16; i++) {
@@ -5940,6 +6009,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                         SIMDE_V128_TO_SIMD_V128(simde_result, result);
 
                         PUT_V128_TO_ADDR(frame_lp + addr_ret, result);
+                        break;
                     }
 
                     /* Splat */
@@ -5965,7 +6035,15 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
 
                     case SIMD_i8x16_splat:
                     {
-                        SIMD_SPLAT_OP_I32(simde_wasm_i8x16_splat);
+                        uint32 val = POP_I32();
+                        addr_ret = GET_OFFSET();
+
+                        simde_v128_t simde_result = simde_wasm_i8x16_splat(val);
+
+                        V128 result;
+                        SIMDE_V128_TO_SIMD_V128(simde_result, result);
+
+                        PUT_V128_TO_ADDR(frame_lp + addr_ret, result);
                         break;
                     }
                     case SIMD_i16x8_splat:
@@ -6081,8 +6159,8 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
 
 #define SIMD_DOUBLE_OP(simde_func)                                           \
     do {                                                                     \
-        V128 v1 = POP_V128();                                                \
         V128 v2 = POP_V128();                                                \
+        V128 v1 = POP_V128();                                                \
         addr_ret = GET_OFFSET();                                             \
                                                                              \
         simde_v128_t simde_result = simde_func(SIMD_V128_TO_SIMDE_V128(v1),  \
@@ -6097,7 +6175,18 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     /* i8x16 comparison operations */
                     case SIMD_i8x16_eq:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i8x16_eq);
+                        V128 v2 = POP_V128();
+                        V128 v1 = POP_V128();
+                        addr_ret = GET_OFFSET();
+
+                        simde_v128_t simde_result =
+                            simde_wasm_i8x16_eq(SIMD_V128_TO_SIMDE_V128(v1),
+                                                SIMD_V128_TO_SIMDE_V128(v2));
+
+                        V128 result;
+                        SIMDE_V128_TO_SIMD_V128(simde_result, result);
+
+                        PUT_V128_TO_ADDR(frame_lp + addr_ret, result);
                         break;
                     }
                     case SIMD_i8x16_ne:
@@ -6954,6 +7043,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i32x4_add:
                     {
+
                         SIMD_DOUBLE_OP(simde_wasm_i32x4_add);
                         break;
                     }
@@ -7488,8 +7578,14 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
         }
 
         for (i = 0; i < cur_func->param_count; i++) {
-            if (cur_func->param_types[i] == VALUE_TYPE_I64
-                || cur_func->param_types[i] == VALUE_TYPE_F64) {
+            if (cur_func->param_types[i] == VALUE_TYPE_V128) {
+                PUT_V128_TO_ADDR(
+                    outs_area->lp,
+                    GET_OPERAND_V128(2 * (cur_func->param_count - i - 1)));
+                outs_area->lp += 4;
+            }
+            else if (cur_func->param_types[i] == VALUE_TYPE_I64
+                     || cur_func->param_types[i] == VALUE_TYPE_F64) {
                 PUT_I64_TO_ADDR(
                     outs_area->lp,
                     GET_OPERAND(uint64, I64,
