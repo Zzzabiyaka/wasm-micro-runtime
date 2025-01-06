@@ -6157,7 +6157,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i8x16_lt_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i8x16_lt);
+                        SIMD_DOUBLE_OP(simde_wasm_u8x16_lt);
                         break;
                     }
                     case SIMD_i8x16_gt_s:
@@ -6167,7 +6167,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i8x16_gt_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i8x16_gt);
+                        SIMD_DOUBLE_OP(simde_wasm_u8x16_gt);
                         break;
                     }
                     case SIMD_i8x16_le_s:
@@ -6177,7 +6177,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i8x16_le_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i8x16_le);
+                        SIMD_DOUBLE_OP(simde_wasm_u8x16_le);
                         break;
                     }
                     case SIMD_i8x16_ge_s:
@@ -6187,7 +6187,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i8x16_ge_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i8x16_ge);
+                        SIMD_DOUBLE_OP(simde_wasm_u8x16_ge);
                         break;
                     }
 
@@ -6209,7 +6209,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i16x8_lt_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i16x8_lt);
+                        SIMD_DOUBLE_OP(simde_wasm_u16x8_lt);
                         break;
                     }
                     case SIMD_i16x8_gt_s:
@@ -6219,7 +6219,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i16x8_gt_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i16x8_gt);
+                        SIMD_DOUBLE_OP(simde_wasm_u16x8_gt);
                         break;
                     }
                     case SIMD_i16x8_le_s:
@@ -6229,7 +6229,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i16x8_le_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i16x8_le);
+                        SIMD_DOUBLE_OP(simde_wasm_u16x8_le);
                         break;
                     }
                     case SIMD_i16x8_ge_s:
@@ -6239,7 +6239,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i16x8_ge_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i16x8_ge);
+                        SIMD_DOUBLE_OP(simde_wasm_u16x8_ge);
                         break;
                     }
 
@@ -6261,7 +6261,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i32x4_lt_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i32x4_lt);
+                        SIMD_DOUBLE_OP(simde_wasm_u32x4_lt);
                         break;
                     }
                     case SIMD_i32x4_gt_s:
@@ -6271,7 +6271,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i32x4_gt_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i32x4_gt);
+                        SIMD_DOUBLE_OP(simde_wasm_u32x4_gt);
                         break;
                     }
                     case SIMD_i32x4_le_s:
@@ -6281,7 +6281,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i32x4_le_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i32x4_le);
+                        SIMD_DOUBLE_OP(simde_wasm_u32x4_le);
                         break;
                     }
                     case SIMD_i32x4_ge_s:
@@ -6291,7 +6291,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i32x4_ge_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i32x4_ge);
+                        SIMD_DOUBLE_OP(simde_wasm_u32x4_ge);
                         break;
                     }
 
@@ -6330,32 +6330,32 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     /* f64x2 comparison operations */
                     case SIMD_f64x2_eq:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_f32x4_eq);
+                        SIMD_DOUBLE_OP(simde_wasm_f64x2_eq);
                         break;
                     }
                     case SIMD_f64x2_ne:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_f32x4_ne);
+                        SIMD_DOUBLE_OP(simde_wasm_f64x2_ne);
                         break;
                     }
                     case SIMD_f64x2_lt:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_f32x4_lt);
+                        SIMD_DOUBLE_OP(simde_wasm_f64x2_lt);
                         break;
                     }
                     case SIMD_f64x2_gt:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_f32x4_gt);
+                        SIMD_DOUBLE_OP(simde_wasm_f64x2_gt);
                         break;
                     }
                     case SIMD_f64x2_le:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_f32x4_le);
+                        SIMD_DOUBLE_OP(simde_wasm_f64x2_le);
                         break;
                     }
                     case SIMD_f64x2_ge:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_f32x4_ge);
+                        SIMD_DOUBLE_OP(simde_wasm_f64x2_ge);
                         break;
                     }
 
@@ -6616,7 +6616,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i8x16_narrow_i16x8_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i8x16_narrow_i16x8);
+                        SIMD_DOUBLE_OP(simde_wasm_u8x16_narrow_i16x8);
                         break;
                     }
                     case SIMD_f32x4_ceil:
@@ -6666,7 +6666,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i8x16_shr_u:
                     {
-                        SIMD_LANE_SHIFT(simde_wasm_i8x16_shr);
+                        SIMD_LANE_SHIFT(simde_wasm_u8x16_shr);
                         break;
                     }
                     case SIMD_i8x16_add:
@@ -6681,7 +6681,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i8x16_add_sat_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i8x16_add_sat);
+                        SIMD_DOUBLE_OP(simde_wasm_u8x16_add_sat);
                         break;
                     }
                     case SIMD_i8x16_sub:
@@ -6696,7 +6696,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i8x16_sub_sat_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i8x16_sub_sat);
+                        SIMD_DOUBLE_OP(simde_wasm_u8x16_sub_sat);
                         break;
                     }
                     case SIMD_f64x2_ceil:
@@ -6716,7 +6716,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i8x16_min_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i8x16_min);
+                        SIMD_DOUBLE_OP(simde_wasm_u8x16_min);
                         break;
                     }
                     case SIMD_i8x16_max_s:
@@ -6726,7 +6726,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i8x16_max_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i8x16_max);
+                        SIMD_DOUBLE_OP(simde_wasm_u8x16_max);
                         break;
                     }
                     case SIMD_f64x2_trunc:
@@ -6746,7 +6746,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i16x8_extadd_pairwise_i8x16_u:
                     {
-                        SIMD_SINGLE_OP(simde_wasm_i16x8_extadd_pairwise_i8x16);
+                        SIMD_SINGLE_OP(simde_wasm_u16x8_extadd_pairwise_u8x16);
                         break;
                     }
                     case SIMD_i32x4_extadd_pairwise_i16x8_s:
@@ -6756,7 +6756,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i32x4_extadd_pairwise_i16x8_u:
                     {
-                        SIMD_SINGLE_OP(simde_wasm_i32x4_extadd_pairwise_i16x8);
+                        SIMD_SINGLE_OP(simde_wasm_u32x4_extadd_pairwise_u16x8);
                         break;
                     }
 
@@ -6805,7 +6805,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i16x8_narrow_i32x4_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i16x8_narrow_i32x4);
+                        SIMD_DOUBLE_OP(simde_wasm_u16x8_narrow_i32x4);
                         break;
                     }
                     case SIMD_i16x8_extend_low_i8x16_s:
@@ -6820,12 +6820,12 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i16x8_extend_low_i8x16_u:
                     {
-                        SIMD_SINGLE_OP(simde_wasm_i16x8_extend_low_i8x16);
+                        SIMD_SINGLE_OP(simde_wasm_u16x8_extend_low_u8x16);
                         break;
                     }
                     case SIMD_i16x8_extend_high_i8x16_u:
                     {
-                        SIMD_SINGLE_OP(simde_wasm_i16x8_extend_high_i8x16);
+                        SIMD_SINGLE_OP(simde_wasm_u16x8_extend_high_u8x16);
                         break;
                     }
                     case SIMD_i16x8_shl:
@@ -6840,7 +6840,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i16x8_shr_u:
                     {
-                        SIMD_LANE_SHIFT(simde_wasm_i16x8_shr);
+                        SIMD_LANE_SHIFT(simde_wasm_u16x8_shr);
                         break;
                     }
                     case SIMD_i16x8_add:
@@ -6855,7 +6855,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i16x8_add_sat_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i16x8_add_sat);
+                        SIMD_DOUBLE_OP(simde_wasm_u16x8_add_sat);
                         break;
                     }
                     case SIMD_i16x8_sub:
@@ -6870,7 +6870,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i16x8_sub_sat_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i16x8_sub_sat);
+                        SIMD_DOUBLE_OP(simde_wasm_u16x8_sub_sat);
                         break;
                     }
                     case SIMD_f64x2_nearest:
@@ -6890,7 +6890,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i16x8_min_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i16x8_min);
+                        SIMD_DOUBLE_OP(simde_wasm_u16x8_min);
                         break;
                     }
                     case SIMD_i16x8_max_s:
@@ -6900,7 +6900,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i16x8_max_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i16x8_max);
+                        SIMD_DOUBLE_OP(simde_wasm_u16x8_max);
                         break;
                     }
                     case SIMD_i16x8_avgr_u:
@@ -6920,12 +6920,12 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i16x8_extmul_low_i8x16_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i16x8_extmul_low_i8x16);
+                        SIMD_DOUBLE_OP(simde_wasm_u16x8_extmul_low_u8x16);
                         break;
                     }
                     case SIMD_i16x8_extmul_high_i8x16_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i16x8_extmul_high_i8x16);
+                        SIMD_DOUBLE_OP(simde_wasm_u16x8_extmul_high_u8x16);
                         break;
                     }
 
@@ -6974,12 +6974,12 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i32x4_extend_low_i16x8_u:
                     {
-                        SIMD_SINGLE_OP(simde_wasm_i32x4_extend_low_i16x8);
+                        SIMD_SINGLE_OP(simde_wasm_u32x4_extend_low_u16x8);
                         break;
                     }
                     case SIMD_i32x4_extend_high_i16x8_u:
                     {
-                        SIMD_SINGLE_OP(simde_wasm_i32x4_extend_high_i16x8);
+                        SIMD_SINGLE_OP(simde_wasm_u32x4_extend_high_u16x8);
                         break;
                     }
                     case SIMD_i32x4_shl:
@@ -6994,7 +6994,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i32x4_shr_u:
                     {
-                        SIMD_LANE_SHIFT(simde_wasm_i32x4_shr);
+                        SIMD_LANE_SHIFT(simde_wasm_u32x4_shr);
                         break;
                     }
                     case SIMD_i32x4_add:
@@ -7020,7 +7020,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i32x4_min_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i32x4_min);
+                        SIMD_DOUBLE_OP(simde_wasm_u32x4_min);
                         break;
                     }
                     case SIMD_i32x4_max_s:
@@ -7030,7 +7030,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i32x4_max_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i32x4_max);
+                        SIMD_DOUBLE_OP(simde_wasm_u32x4_max);
                         break;
                     }
                     case SIMD_i32x4_dot_i16x8_s:
@@ -7050,12 +7050,12 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i32x4_extmul_low_i16x8_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i32x4_extmul_low_i16x8);
+                        SIMD_DOUBLE_OP(simde_wasm_u32x4_extmul_low_u16x8);
                         break;
                     }
                     case SIMD_i32x4_extmul_high_i16x8_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i32x4_extmul_high_i16x8);
+                        SIMD_DOUBLE_OP(simde_wasm_u32x4_extmul_high_u16x8);
                         break;
                     }
 
@@ -7104,12 +7104,12 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i64x2_extend_low_i32x4_u:
                     {
-                        SIMD_SINGLE_OP(simde_wasm_i64x2_extend_low_i32x4);
+                        SIMD_SINGLE_OP(simde_wasm_u64x2_extend_low_u32x4);
                         break;
                     }
                     case SIMD_i64x2_extend_high_i32x4_u:
                     {
-                        SIMD_SINGLE_OP(simde_wasm_i64x2_extend_high_i32x4);
+                        SIMD_SINGLE_OP(simde_wasm_u64x2_extend_high_u32x4);
                         break;
                     }
 
@@ -7126,7 +7126,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i64x2_shr_u:
                     {
-                        SIMD_LANE_SHIFT(simde_wasm_i64x2_shr);
+                        SIMD_LANE_SHIFT(simde_wasm_u64x2_shr);
                         break;
                     }
                     case SIMD_i64x2_add:
@@ -7186,12 +7186,12 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i64x2_extmul_low_i32x4_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i64x2_extmul_low_i32x4);
+                        SIMD_DOUBLE_OP(simde_wasm_u64x2_extmul_low_u32x4);
                         break;
                     }
                     case SIMD_i64x2_extmul_high_i32x4_u:
                     {
-                        SIMD_DOUBLE_OP(simde_wasm_i64x2_extmul_high_i32x4);
+                        SIMD_DOUBLE_OP(simde_wasm_u64x2_extmul_high_u32x4);
                         break;
                     }
 
@@ -7317,7 +7317,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i32x4_trunc_sat_f32x4_u:
                     {
-                        SIMD_SINGLE_OP(simde_wasm_i32x4_trunc_sat_f32x4);
+                        SIMD_SINGLE_OP(simde_wasm_u32x4_trunc_sat_f32x4);
                         break;
                     }
                     case SIMD_f32x4_convert_i32x4_s:
@@ -7327,7 +7327,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_f32x4_convert_i32x4_u:
                     {
-                        SIMD_SINGLE_OP(simde_wasm_f32x4_convert_i32x4);
+                        SIMD_SINGLE_OP(simde_wasm_f32x4_convert_u32x4);
                         break;
                     }
                     case SIMD_i32x4_trunc_sat_f64x2_s_zero:
@@ -7337,7 +7337,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_i32x4_trunc_sat_f64x2_u_zero:
                     {
-                        SIMD_SINGLE_OP(simde_wasm_i32x4_trunc_sat_f64x2_zero);
+                        SIMD_SINGLE_OP(simde_wasm_u32x4_trunc_sat_f64x2_zero);
                         break;
                     }
                     case SIMD_f64x2_convert_low_i32x4_s:
@@ -7347,7 +7347,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                     }
                     case SIMD_f64x2_convert_low_i32x4_u:
                     {
-                        SIMD_SINGLE_OP(simde_wasm_f64x2_convert_low_i32x4);
+                        SIMD_SINGLE_OP(simde_wasm_f64x2_convert_low_u32x4);
                         break;
                     }
 
