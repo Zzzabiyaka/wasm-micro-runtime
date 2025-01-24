@@ -5838,8 +5838,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                         uint32 offset, addr;
                         offset = read_uint32(
                             frame_ip); // TODO: Check with an offset!
-                        addr = GET_OPERAND(uint32, I32, 0);
-                        frame_ip += 2;
+                        addr = POP_I32();
                         addr_ret = GET_OFFSET();
                         CHECK_MEMORY_OVERFLOW(16);
                         PUT_V128_TO_ADDR(frame_lp + addr_ret, LOAD_V128(maddr));
@@ -5934,9 +5933,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                         uint32 offset, addr;
                         offset = read_uint32(frame_ip);
                         V128 data = POP_V128();
-                        int32 base = POP_I32();
-                        offset += base;
-                        addr = GET_OPERAND(uint32, I32, 0);
+                        addr  = POP_I32();
 
                         CHECK_MEMORY_OVERFLOW(32);
                         STORE_V128(maddr, data);
@@ -6466,7 +6463,6 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
 
 #define SIMD_LOAD_LANE_COMMON(vec, register, lane, width)  \
     do {                                                   \
-        addr = GET_OPERAND(uint32, I32, 0);                \
         addr_ret = GET_OFFSET();                           \
         CHECK_MEMORY_OVERFLOW(width / 8);                  \
         if (width == 64) {                                 \
@@ -6483,8 +6479,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
         uint32 offset, addr;                               \
         offset = read_uint32(frame_ip);                    \
         V128 vec = POP_V128();                             \
-        int32 base = POP_I32();                            \
-        offset += base;                                    \
+        addr = POP_I32();                                  \
         int lane = *frame_ip++;                            \
         SIMD_LOAD_LANE_COMMON(vec, register, lane, width); \
     } while (0)
@@ -6514,11 +6509,8 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
         uint32 offset, addr;                              \
         offset = read_uint32(frame_ip);                   \
         V128 vec = POP_V128();                            \
-        int32 base = POP_I32();                           \
-        offset += base;                                   \
+        addr = POP_I32();                                 \
         int lane = *frame_ip++;                           \
-        addr = GET_OPERAND(uint32, I32, 0);               \
-        addr_ret = GET_OFFSET();                          \
         CHECK_MEMORY_OVERFLOW(width / 8);                 \
         if (width == 64) {                                \
             STORE_I64(maddr, vec.register[lane]);         \
@@ -6555,8 +6547,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
     do {                                                   \
         uint32 offset, addr;                               \
         offset = read_uint32(frame_ip);                    \
-        int32 base = POP_I32();                            \
-        offset += base;                                    \
+        addr = POP_I32();                                  \
         int32 lane = 0;                                    \
         V128 vec = { 0 };                                  \
         SIMD_LOAD_LANE_COMMON(vec, register, lane, width); \
