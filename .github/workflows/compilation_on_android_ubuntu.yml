@@ -11,7 +11,7 @@ on:
       - synchronize
     paths:
       - ".github/workflows/build_llvm_libraries.yml"
-      - ".github/workflows/compilation_on_android_ubuntu.yml"
+      - ".github/workflows/compilation_on_android_ubuntu.yml"    
       - "build-scripts/**"
       - "core/**"
       - "!core/deps/**"
